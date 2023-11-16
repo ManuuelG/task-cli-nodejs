@@ -3,6 +3,14 @@
 const args = process.argv
 const command = args[2]
 
+
+const fs = require('fs')
+
+const data = JSON.parse(fs.readFileSync('./data.json'));
+
+
+
+
 function main() {
 	switch (command) {
 		case '--help':
@@ -14,6 +22,16 @@ function main() {
 			showVersion()
 			break
 
+		case '--list':
+				getTasks()
+				break
+
+		case '--show':
+				getTaskById(args[3])
+				break
+
+		
+		
 		// AQUÍ TU CÓDIGO PARA PROCESAR OTROS COMANDOS
 
 		default:
@@ -41,11 +59,28 @@ function showVersion() {
 }
 
 function getTasks() {
-	// AQUI TU CÓDIGO
-}
+	
+	
+
+	for (i = 0; i < data.tasks.length; i++) {
+
+		const event = new Date(data.tasks[i].id)
+		console.log(event.toUTCString() + ":", data.tasks[i].body);
+	  } 
+  }
 
 function getTaskById(id) {
-	// AQUI TU CÓDIGO
+	
+
+	const task = data.tasks.find((task) => task.id === +id)
+
+	if (task) {
+		console.log(`ID: ${task.id}`);
+		console.log(`Body: ${task.body}`);
+	  } else {
+		console.log('El ID que has introducido no es válido');
+	  }
+
 }
 
 function saveData(newData) {
@@ -53,7 +88,7 @@ function saveData(newData) {
 }
 
 function createTask(body) {
-	// AQUÍ TU CÓDIGO
+		
 }
 
 function updateTask(id, body) {
